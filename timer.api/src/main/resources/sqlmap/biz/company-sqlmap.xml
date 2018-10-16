@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.farota.api.front.mapper.biz.CompanyMapper">
+
+	<select id="getCompanyList" parameterType="hashmap" resultType="com.farota.core.domain.Company">
+	/* com.farota.api.front.mapper.biz.CompanyMapper.getCompanyList */
+	SELECT
+		company_index		companyIndex
+		, company_id		companyId
+		, name				name
+	FROM company
+	<where>
+		<if test='param.query !=null and param.query !=""'>
+			AND name LIKE CONCAT('%',#{param.query},'%')
+		</if>
+	</where>
+	ORDER BY company_index DESC
+	LIMIT #{param.offset}, #{param.size}
+	</select>
+	
+	<select id="getCompany" parameterType="hashmap" resultType="com.farota.core.domain.Company">
+	/* com.farota.api.front.mapper.biz.CompanyMapper.getCompany */
+	SELECT
+		company_index		companyIndex
+		, company_id		companyId
+		, name				name
+	FROM company
+	WHERE company_index = #{param.companyIndex}
+	</select>
+	
+	<insert id="postCompany" parameterType="com.farota.core.domain.Company" useGeneratedKeys="true" keyProperty="company.companyIndex" keyColumn="company_index">
+	/* com.farota.api.front.mapper.biz.CompanyMapper.postCompany */
+	INSERT INTO company(
+		company_id
+		, name
+		, create_datetime
+		, create_user_id
+		, charge_datetime
+		, charge_user_id
+	) VALUES (
+		#{company.companyId}
+		, #{company.name}
+		, NOW()
+		, #{user.userId}
+		, NOW()
+		, #{user.userId}
+	)
+	</insert>
+	
+	<insert id="putCompany" parameterType="com.farota.core.domain.Company">
+	/* com.farota.api.front.mapper.biz.CompanyMapper.putCompany */
+	UPDATE company
+	SET name = #{company.name}
+		, charge_datetime = NOW()
+		, charge_user_id = #{user.userId}
+	WHERE company_index = #{company.companyIndex}
+	</insert>
+	
+</mapper>

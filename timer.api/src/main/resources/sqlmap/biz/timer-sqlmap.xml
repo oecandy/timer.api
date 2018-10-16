@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.farota.api.timer.mapper.biz.TimerMapper">
+
+	<select id="getTimer" parameterType="hashmap" resultType="com.farota.api.timer.domain.TimerTemplate">
+	/* com.farota.api.timer.mapper.biz.TimerMapper.getTimer */
+	SELECT
+		company_id		companyId
+		, site_id		siteId
+		, timer_t_id	timerTId
+		, timer_id		timerId
+	FROM timer
+	WHERE company_id = #{param.companyId} and site_id = #{param.siteId} and timer_t_id = #{param.timerTId} and timer_id = #{param.timerId}
+	</select>
+	
+	<select id="getTimerTemplate" parameterType="hashmap" resultType="com.farota.api.timer.domain.TimerTemplate">
+	/* com.farota.api.timer.mapper.biz.TimerMapper.getTimerTemplate */
+	SELECT
+		company_id		companyId
+		, site_id		siteId
+		, timer_t_id	timerTId
+		, start_time	startTime
+		, end_time		endTime
+		, command		command
+		, serial_no		serialNo
+	FROM timer_template
+	WHERE company_id = #{param.companyId} and site_id = #{param.siteId} and timer_t_id = #{param.timerTId}
+	</select>
+	
+	<insert id="postTimer" parameterType="com.farota.api.timer.domain.Timer">
+	/* com.farota.api.timer.mapper.biz.TimerMapper.postTimer */
+	INSERT INTO TIMER(
+		company_id
+		, site_id
+		, timer_id
+		, timer_t_id
+		, weekly
+	) VALUES (
+		#{timer.companyId}
+		, #{timer.siteId}
+		, #{timer.timerId}
+		, #{timer.timerTId}
+		, #{timer.weekly}
+	)
+	</insert>
+	
+	<insert id="postTimerTemplate" parameterType="com.farota.api.timer.domain.TimerTemplate">
+	/* com.farota.api.timer.mapper.biz.TimerMapper.postTimerTemplate */
+	INSERT INTO TIMERTEMPLATE(
+		company_id
+		, site_id
+		, timer_t_id
+		, start_time
+		, end_time
+		, command
+		, serial_no
+	) VALUES (
+		#{timerTemplate.companyId}
+		, #{timerTemplate.siteId}
+		, #{timerTemplate.startTime}
+		, #{timerTemplate.endTime}
+		, #{timerTemplate.command}
+		, #{timerTemplate.serialNo}
+	)
+	</insert>
+	
+</mapper>
